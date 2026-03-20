@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout::head('과목관리')}">
+<head th:replace="~{fragments/layout::head('교과목 상세')}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -8,6 +8,37 @@
 <div class="container-fluid"><!--본문 -->
     <div class="row">
         <th:block th:replace="~{fragments/layout::sidebar('subject')}"></th:block><!--사이드바 추가 -->
+        <main class="col-md-10 main-content">
+            <div class="page-header d-flex justify-content-between align-items-center"><!-- 과목정보 및 삭제버튼-->
+                <div><!--교과목 정보 -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-1">
+                            <li class="breadcrumb-item"><a th:href="@{/subjects}">과목관리</a></li>
+                            <li class="breadcrumb-item active" th:text="${subject.subjectName}">교과목</li>
+                        </ol>
+                        <h2>
+                            <i class="bi bi-journal-bookmark text-primary"></i><span th:text="${subject.subjectName}"></span>
+                        </h2>
+                        <p class="text-muted mb-0" th:text="${subject.description}"></p>
+                    </nav>
+                </div>
+                <div><!--수정/삭제버튼 -->
+                    <a class="btn btn-warning me-1" th:href="@{/subjects/edit/{id}(id=${subject.id})}">
+                        <i class="bi bi-pencil"></i> 수정
+                    </a>
+                    <a class="btn btn-danger" th:href="@{/subjects/delete/{id}(id=${subject.id})}"
+                    onclick="return confirm('삭제하시겠습니까?')">
+                        <i class="bi bi-trash"></i> 삭제
+                    </a>
+                </div>
+            </div>
+            <div th:if="${param.error}" class="alert alert-danger" th:text="${param.error}"><!-- 오류메시지 출력-->
+
+            </div>
+            <div><!-- 교과목과 관련된 챕터-->
+
+            </div>
+        </main>
     </div>
 
 </div>

@@ -80,7 +80,7 @@ public class SubjectController {
     }
 
     /** 교과목 수정 폼(HTML로 이동)*/
-    @GetMapping("/edit.{id}")
+    @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model){
         //[1] 대상을 조회해서 결과를 저장
         model.addAttribute("subject", subjectService.getSubject(id));
