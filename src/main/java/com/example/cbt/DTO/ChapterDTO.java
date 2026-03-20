@@ -14,7 +14,7 @@ public class ChapterDTO {
     private String description; //설명
     private LocalDateTime createdAt;
     private Long subjectId;  //교과목(부모테이블)의 id번호
-    private String subjectName; //교과목 이름
+    private String subjectName_parent; //교과목 이름
 }
 //DTO에는 부모/자식의 Entity를 사용
 //자식에서 부모 Entity를 사용하지 않을 때는 반드시 부모의 id값을 저장

@@ -80,7 +80,7 @@ public class ChapterService {
                 .chapterNo(entity.getChapterNo())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
-                .createAt(entity.getCreateAt())
+                .createdAt(entity.getCreateAt())
                 .subjectId(entity.getSubject().getId())//교과목 번호(부모테이블)
                 .subjectName_parent(entity.getSubject().getSubjectName())//교과목제목
                 .build();
