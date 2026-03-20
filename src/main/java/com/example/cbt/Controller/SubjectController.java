@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/subject")//그룹화해서 보안사용시 제어가 편하다.
+@RequestMapping("/subjects")//그룹화해서 보안사용시 제어가 편하다.
 public class SubjectController {
     private final SubjectService subjectService;
     private final SubjectRepository subjectRepository;
@@ -119,4 +119,9 @@ public class SubjectController {
     //Entity -> DTO -> Repository -> Service 이후에 완성
 
 }//end
+
+//HTML작업시 유의사항
+//HTML에 메뉴가 없으면 브라우저에 주소를 수동으로 입력해서 각 페이지에 접근
+//메뉴나 버튼으로 요청이 존재하면 해당 메뉴나 버튼으로 접근
+//수정된 HTMl은 반드시  F5(새로고침)로 적용한 후 작업
 
