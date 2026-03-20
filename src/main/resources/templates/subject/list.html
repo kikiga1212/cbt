@@ -20,15 +20,65 @@
                 </div>
                 <a class="btn btn-primary" th:href="@{/subjects/new}"><!--등록버튼 -->
                     <i class="bi bi-plus-circle"></i> 교과목 등록
-
                 </a>
-
             </div>
-            <div><!--교과목 목록 -->
+            <div class="card"><!--교과목 목록 -->
+                <div class="card-header"><!--카드 헤더 -->
+                    교과목 목록(<span th:text="${subjects.size()}">0</span>개)
+                </div>
+                <div class="card-body p-0"><!-- 카드 바디-->
+                    <table class="table table-hover mb-0"><!--표 -->
+                        <thead class="table-light"><!-- 표 제목-->
+                            <tr>
+                                <th>번호</th>
+                                <th>교과목명</th>
+                                <th>설명</th>
+                                <th>챕터 수</th>
+                                <th>등록일</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody><!-- 표 내용-->
+                            <tr th:if="${subjects.empty}"><!--데이터가 없을때 (if문으로 처리)-->
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    등록된 교과목이 없습니다.
+                                </td>
+                            </tr>
+                            <tr th:each="subject, stat:${subjects}"><!--반복, 데이터가 존재할 때(th 갯수만큼) -->
+                                <td th:text="${stat.count}"><!--리스트의 순서번호 -->
 
+                                </td>
+                                <td><!--제목 -->
+                                    <a class="fw-bold text-decoration-none" th:text="${subject.getSubjectName()}" th:href="@{/subjects/{id}(id=${subject.id})}"> 제목</a>
+                                </td>
+                                <td th:text="${subject.getDescription()}"><!--설명 -->
+
+                                </td>
+                                <td><!--챕터 수 -->
+                                    작업전
+
+                                </td>
+                                <!-- each에서 선언한 subject.함수 또는 변수로 호출하면 된다.-->
+                                <td th:text="${#temporals.format(subject.getCreatedAt(), 'yyyy-MM-dd')}"><!-- 등록일-->
+
+                                </td>
+                                <td><!-- 작업-->
+                                    <a th:href="@{/subjects/{id}(id=${subject.id})}"
+                                    class="btn btn-sm btn-outline-primary btn-action"><i class="bi bi-eye"></i></a><!--상세보기 -->
+                                    <a th:href="@{/subjects/edit/{id}(id=${subject.id})}"
+                                    class="btn btn-sm btn-outline-warning btn-action"><i class="bi bi-pencil"></i></a><!-- 수정-->
+                                    <a th:href="@{/subjects/delete/{id}(id=${subject.id})}"
+                                    class="btn btn-sm btn-outline-danger btn-action"
+                                    onclick="return confirm('삭제하시겠습니까?')"><i class="bi bi-trash"></i></a><!-- 삭제-->
+                                </td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
-
     </div>
 
 </div>
