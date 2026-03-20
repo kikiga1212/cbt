@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 //@ToString 연관관계 작업시 무한루프 현상, 예외적용
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
