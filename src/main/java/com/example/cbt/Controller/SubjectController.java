@@ -1,7 +1,9 @@
 package com.example.cbt.Controller;
 
+import com.example.cbt.DTO.ChapterDTO;
 import com.example.cbt.DTO.SubjectDTO;
 import com.example.cbt.Repository.SubjectRepository;
+import com.example.cbt.Service.ChapterService;
 import com.example.cbt.Service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import java.util.List;
 public class SubjectController {
     private final SubjectService subjectService;
     private final SubjectRepository subjectRepository;
+    private final ChapterService chapterService;
     /*
     html로 이동할때는 return "template에 있는 파일을 지정"
     Service는 이동할 때는 return "redirect:/맵핑명"-> 현재 Controller내에
@@ -61,19 +64,21 @@ public class SubjectController {
             return "redirect:/subjects/" + saved.getId();//상세페이지로 이동
         }catch (Exception e){//모든 오류종류를 처리
             //[4] 등록을 실패했을때 오류메시지를 가지고, 등록페이지로 이동
-            return "rediredt:/subjects/new?error="+e.getMessage();
+            return "redirect:/subjects/new?error="+e.getMessage();
         }
     }
 
     /** 교과목 상세보기(HTML로 이동)*/
     @GetMapping("/{id}")
-    public String viewSubjext(@PathVariable Long id, Model model){
+    public String viewSubject(@PathVariable Long id, Model model){
         //[1] id를 이용해서 조회대상 조회
         SubjectDTO subject = subjectService.getSubject(id);
 
         //[2] 조회한 내용과 추가전 내용을 전달
         //fixMe : 기존 챕터 목록과 신규등록 챕터 정보
         model.addAttribute("subject", subject);
+        model.addAttribute("chapters", subject.getChapters());
+        model.addAttribute("newChapter", new ChapterDTO());
 
         //[3] 상세보기 페이지로 이동
         return "subject/view";
@@ -116,7 +121,46 @@ public class SubjectController {
     }
 
     //Todo : //챕터를 작업할 내용
+    //챕터 등록
+    @PostMapping("/{subjectId}/chapters")
+    public String createChapter(@PathVariable Long subjectId, @ModelAttribute ChapterDTO dto){
+        try{
+            chapterService.createChapter(subjectId, dto);//부모id와 자식의 데이터로 저장
+            return "redirect:/subjects/"+subjectId;//교과목 상세페이지로 이동
+        }catch (Exception e){
+            return "redirect:/subjects/"+subjectId+"?error="+e.getMessage();
+        }
+    }
+
+    //챕터 수정 페이지(교과목 저옵, 챕터 수정할 데이터)
+    @GetMapping("/{subjectId}/chapter/edit/{chapterId}")
+    public String editChapterForm(@PathVariable Long subjectId, @PathVariable Long chapterId,
+                              Model model){
+        model.addAttribute("subject", subjectService.getSubject(subjectId));
+        model.addAttribute("chapter", chapterService.getChapter(chapterId));
+
+        return "subject/chapter/edit";
+    }
+
+    //챕터 수정 처리
+    public String updateChapter(@PathVariable Long subjectId, @PathVariable Long chapterId,
+                                @ModelAttribute ChapterDTO dto){
+        try{
+            chapterService.updateChapter(chapterId, dto);
+            return "redirect:/subjects/"+subjectId;//수정후 상세페이지로
+        }catch (Exception e){
+            return "redirect:/subjects/"+subjectId+"?error="+e.getMessage();
+        }
+    }
+
+    //챕터 삭제
+    @GetMapping("/{subjectId}/chapters/delete/{chapterId}")
+    public String deleteChapter(@PathVariable Long subjectId, @PathVariable Long chapterId){
+        chapterService.deleteChapter(chapterId);
+        return "redirect:/subjects/"+subjectId;
+    }
     //Entity -> DTO -> Repository -> Service 이후에 완성
+
 
 }//end
 

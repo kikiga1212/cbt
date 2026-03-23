@@ -1,7 +1,9 @@
 package com.example.cbt.Service;
 
+import com.example.cbt.DTO.ChapterDTO;
 import com.example.cbt.DTO.SubjectDTO;
 import com.example.cbt.Entity.SubjectEntity;
+import com.example.cbt.Repository.ChapterRepository;
 import com.example.cbt.Repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class SubjectService {
     private final SubjectRepository subjectRepository;
     private final ModelMapper modelMapper;
+    private final ChapterRepository chapterRepository;
     //챕터 정보
 
     //등록
@@ -81,6 +84,16 @@ public class SubjectService {
         //[2] 변환
         SubjectDTO dto = toDTO(entity);
         //교과목이 해당하는 챕터를 수집
+        List<ChapterDTO> chapters = chapterRepository.findBySubjectIdOrderByChapterNoAsc(id)
+                .stream().map(c->ChapterDTO.builder()
+                        .id(c.getId())
+                        .chapterNo(c.getChapterNo())
+                        .description(c.getDescription())
+                        .createdAt(c.getCreateAt())
+                        .subjectId(entity.getId())
+                        .subjectName_parent(entity.getSubjectName())
+                        .build()).collect(Collectors.toList());
+        dto.setChapters(chapters);
 
         //[3] 전달
         return dto;

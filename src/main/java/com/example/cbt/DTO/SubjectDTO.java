@@ -3,6 +3,7 @@ package com.example.cbt.DTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,4 +18,6 @@ public class SubjectDTO {
     private LocalDateTime createdAt;
 
     //교과목 작업시 해당 자식에 챕터 정보
+    private Integer chapterCount;
+    private List<ChapterDTO> chapters;
 }
